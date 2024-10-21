@@ -13,11 +13,21 @@ from taxi.models import Car, Manufacturer
 
 class FormsTestCase(TestCase):
     def setUp(self):
-        self.manufacturer1 = Manufacturer.objects.create(name="Manufacturer One")
-        self.manufacturer2 = Manufacturer.objects.create(name="Manufacturer Two")
+        self.manufacturer1 = Manufacturer.objects.create(
+            name="Manufacturer One"
+        )
+        self.manufacturer2 = Manufacturer.objects.create(
+            name="Manufacturer Two"
+        )
 
-        self.car1 = Car.objects.create(model="Model One", manufacturer=self.manufacturer1)
-        self.car2 = Car.objects.create(model="Model Two", manufacturer=self.manufacturer2)
+        self.car1 = Car.objects.create(
+            model="Model One",
+            manufacturer=self.manufacturer1
+        )
+        self.car2 = Car.objects.create(
+            model="Model Two",
+            manufacturer=self.manufacturer2
+        )
 
         self.driver1 = get_user_model().objects.create_user(
             username="driver_one",
@@ -59,20 +69,28 @@ class FormsTestCase(TestCase):
     def test_manufacturer_search_form(self):
         form = ManufacturerSearchForm(data={"name": "Manufacturer"})
         self.assertTrue(form.is_valid())
-        results = Manufacturer.objects.filter(name__icontains=form.cleaned_data["name"])
+        results = Manufacturer.objects.filter(
+            name__icontains=form.cleaned_data["name"]
+        )
         self.assertIn(self.manufacturer1, results)
         self.assertIn(self.manufacturer2, results)
 
     def test_car_search_form(self):
-        form = CarSearchForm(data={"model": "Model One"})
+        form = CarSearchForm(
+            data={"model": "Model One"}
+        )
         self.assertTrue(form.is_valid())
-        results = Car.objects.filter(model__icontains=form.cleaned_data["model"])
+        results = Car.objects.filter(
+            model__icontains=form.cleaned_data["model"]
+        )
         self.assertIn(self.car1, results)
         self.assertNotIn(self.car2, results)
 
     def test_driver_search_form(self):
         form = DriverSearchForm(data={"username": "driver_one"})
         self.assertTrue(form.is_valid())
-        results = get_user_model().objects.filter(username__icontains=form.cleaned_data["username"])
+        results = get_user_model().objects.filter(
+            username__icontains=form.cleaned_data["username"]
+        )
         self.assertIn(self.driver1, results)
         self.assertNotIn(self.driver2, results)
